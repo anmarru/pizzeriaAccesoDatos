@@ -21,10 +21,10 @@ import java.io.FileWriter;
 
 public class GestorDeArchivo {
 
-    public  static List<Cliente> leerCliente() throws IOException {
+    public  static List<Cliente> leerCliente(String nombreArchivo) throws IOException {
 
         List<Cliente> listaCliente= new ArrayList<>();
-        try(BufferedReader reader= new BufferedReader(new FileReader("clientes.txt"))){
+        try(BufferedReader reader= new BufferedReader(new FileReader(nombreArchivo))){
             String lineas;
             while ((lineas= reader.readLine()) !=null){
                 String[] campos= lineas.split("[;,|]");
@@ -46,6 +46,7 @@ public class GestorDeArchivo {
                 listaCliente.add(cliente);
             }
         }
+
         return  listaCliente;
     }
 
@@ -58,7 +59,7 @@ public class GestorDeArchivo {
 
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,true);
             marshaller.marshal(cliente,new File(nombreArchivo));
-            System.out.println("exportado..");
+            System.out.println("exportado archivoXML...\n");
     }
 
     public static List<Cliente> importarClientesDesdeArchivoXML(String ruraArchivo) throws JAXBException {
@@ -77,6 +78,7 @@ public class GestorDeArchivo {
         try (PrintWriter pw = new PrintWriter("Ingredientes.csv")) {
             StatefulBeanToCsv<Ingrediente> beanToCsv = new StatefulBeanToCsvBuilder<Ingrediente>(pw).withSeparator(';').build();
             beanToCsv.write(listaDeIngredientes);
+            System.out.println("exportado archivoCSV...\n");
         }
     }
 
@@ -84,12 +86,12 @@ public class GestorDeArchivo {
         List<Ingrediente> ingredientes;
 
         try (FileReader fileReader = new FileReader("ingredientes.csv")) {
-            // Se crea un csvToBean de clase Alumno
+            // Se crea un csvToBean de clase ingrediente
             CsvToBean<Ingrediente> csvToBean = new
                     CsvToBeanBuilder<Ingrediente>(fileReader)
                     .withType(Ingrediente.class)
                     .build();
-            // Parsea el fichero CSV en una lista de alumnos
+            // Parsea el fichero CSV en una lista de ingrdientes
             ingredientes = csvToBean.parse();
         }
 

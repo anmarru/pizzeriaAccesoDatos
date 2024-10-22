@@ -20,7 +20,10 @@ import utilidades.GestorDeArchivo;
 import javax.xml.bind.JAXBException;
 
 public class Pizzeria {
+    private static final String ARCHIVO_TXT="admin.txt";
+    private static final String ARCHIVO_XML="clientes.xml";
     public static void main(String[] args) {
+
 
         ControladorCilente controladorCilente= new ControladorCilente();
 
@@ -113,21 +116,20 @@ public class Pizzeria {
         controladorCilente.recibirPedido();
         System.out.println(controladorCilente.getControladorPedido().getPedidoactual());
 
+
+
         System.out.println("-------------------------------ARCHIVOS-----------------------------------------------------------\n");
+        //-------------------PRACTICA ARCHIVOS--------------------------------------------------------------
 
-
-
-        
-    //-------------------PRACTICA ARCHIVOS--------------------------------------------------------------
-
-    //FUNCION LEER CLIENTES
-        List<Cliente> clientes= null;
+        //FUNCION LEER ARCHIVO TXT
         try {
-            clientes = GestorDeArchivo.leerCliente();
-        } catch (IOException e) {
+                List<Cliente> clientes=controladorCilente.leerArchivoTXT(ARCHIVO_TXT);
+                clientes.forEach(System.out::println);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        clientes.forEach(System.out::println);
+
+
 
     //FUNCION EXPORTAR CLIENTESXML
         List<Cliente> listaClientes= new ArrayList<>();
@@ -135,34 +137,30 @@ public class Pizzeria {
         listaClientes.add(new Cliente(2, "22203344F", "María", "C/Sol 5", "678954321", "m.gonzalez@correo.com", "23456B", false));
         listaClientes.add(new Cliente(3, "33301234A", "Carlos", "Av. Libertad 3", "690123456", "c.lopez@correo.com", "34567C", true));
 
-        String nombreArchivo= "clientes.xml";
         try {
-            GestorDeArchivo.exportarClienteAxml(listaClientes,nombreArchivo);
+            controladorCilente.exportarArchivoClientesXML(listaClientes,ARCHIVO_XML);
         } catch (JAXBException e) {
             throw new RuntimeException(e);
         }
 
 
-        //Importar xml a objetos cliente
-        String rutaArchivoXML="clientes.xml";
+        //FUNCION IMPORTAR CLIENTEXML
+
         //creo mi lista para almacenar los obj importados del xml
-        List<Cliente> listaClientes2= null;
+        List<Cliente>  listaClientesxml;
         try {
-            listaClientes2 = GestorDeArchivo.importarClientesDesdeArchivoXML(rutaArchivoXML);
+             listaClientesxml = controladorCilente.importarArchivoClientesXML(ARCHIVO_XML);
         } catch (JAXBException e) {
             throw new RuntimeException(e);
         }
-        if(listaClientes2 !=null){
-            for(Cliente c: listaClientes2){
-                System.out.println(c);
-            }
+        if(listaClientes !=null){
+            listaClientesxml.forEach(System.out::println);
         }else {
             System.out.println("no se pudieron importar los clientes ");
         }
 
 
-        //exportar ingredientes a csv
-
+        //FUNCION EXPORTAR ARCHIVO CSV
         List<Ingrediente> lista_ingredientes= new ArrayList<>();
         lista_ingredientes.add(new Ingrediente("peperoni",List.of("sulfito","lacteo"),1));
         lista_ingredientes.add(new Ingrediente("queso",List.of("lacteo"),2));
@@ -171,7 +169,7 @@ public class Pizzeria {
         lista_ingredientes.add(new Ingrediente("champiñones",List.of(),5));
 
         try {
-            GestorDeArchivo.exportarIngredienteCSV(lista_ingredientes);
+            controladorCilente.exportarArchivoIngredientesCSV(lista_ingredientes);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (CsvRequiredFieldEmptyException e) {
@@ -180,14 +178,16 @@ public class Pizzeria {
             throw new RuntimeException(e);
         }
 
+        //FUNCION IMPORTAR ARCHIVO CSV
         try {
-            GestorDeArchivo.importarIngredientesDesdeCSV();
+            controladorCilente.importarArchivoIngredienteCSV();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        for (Ingrediente ingrediente: lista_ingredientes){
-            System.out.println(ingrediente);
-        }
+         lista_ingredientes.forEach(System.out::println);
+
+
+
     }
  
 }

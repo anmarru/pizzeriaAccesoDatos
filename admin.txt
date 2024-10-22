@@ -1,0 +1,3 @@
+1,Juan Perez;12345678A;Calle falsa 123;juan.perez@mail.com;+34600123456;securepass;true
+2,Ana Torres,23456789D,Avenida del sol 45,ana.torres@mail.com,+34600111222,password123,false
+3|Gregory|45214569F|Plaza mayor 10 |gregory@gmail.com|96685452| abc12345,true

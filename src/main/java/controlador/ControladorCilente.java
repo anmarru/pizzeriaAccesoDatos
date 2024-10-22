@@ -1,13 +1,21 @@
 package controlador;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import modelo.cliente.Cliente;
+import modelo.pedido.Ingrediente;
 import modelo.pedido.LineaPedido;
 import modelo.pedido.Pagable;
 import modelo.pedido.Pedido;
 import modelo.producto.Producto;
+import utilidades.GestorDeArchivo;
+
+import javax.xml.bind.JAXBException;
 
 public class ControladorCilente {
     private static ControladorCilente controladorCilente;
@@ -123,5 +131,28 @@ public class ControladorCilente {
 
     public void setListaClientes(List<Cliente> listaClientes) {
         this.listaClientes = listaClientes;
+    }
+
+
+    public List<Cliente> leerArchivoTXT(String nombreArchivo) throws IOException {
+
+        return GestorDeArchivo.leerCliente(nombreArchivo);
+
+    }
+
+    public void exportarArchivoClientesXML(List<Cliente>listaClientes, String nombreArchivo) throws JAXBException {
+        GestorDeArchivo.exportarClienteAxml(listaClientes,nombreArchivo);
+    }
+
+    public List<Cliente> importarArchivoClientesXML(String nombreArchivo) throws JAXBException {
+        return GestorDeArchivo.importarClientesDesdeArchivoXML(nombreArchivo);
+    }
+
+    public void exportarArchivoIngredientesCSV(List<Ingrediente> listaDeIngredientes) throws CsvRequiredFieldEmptyException, FileNotFoundException, CsvDataTypeMismatchException {
+        GestorDeArchivo.exportarIngredienteCSV(listaDeIngredientes);
+    }
+
+    public List<Ingrediente> importarArchivoIngredienteCSV() throws IOException {
+        return GestorDeArchivo.importarIngredientesDesdeCSV();
     }
 }
