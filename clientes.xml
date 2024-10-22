@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<clientes>
+    <cliente id="1">
+        <dni>5235474Q</dni>
+        <nombre>nico</nombre>
+        <direccion>calle x 12</direccion>
+        <telefono>652358896</telefono>
+        <email>nico@gmail.com</email>
+        <password>14563A</password>
+        <esAdministrador>true</esAdministrador>
+    </cliente>
+    <cliente id="2">
+        <dni>22203344F</dni>
+        <nombre>María</nombre>
+        <direccion>C/Sol 5</direccion>
+        <telefono>678954321</telefono>
+        <email>m.gonzalez@correo.com</email>
+        <password>23456B</password>
+        <esAdministrador>false</esAdministrador>
+    </cliente>
+    <cliente id="3">
+        <dni>33301234A</dni>
+        <nombre>Carlos</nombre>
+        <direccion>Av. Libertad 3</direccion>
+        <telefono>690123456</telefono>
+        <email>c.lopez@correo.com</email>
+        <password>34567C</password>
+        <esAdministrador>true</esAdministrador>
+    </cliente>
+</clientes>
