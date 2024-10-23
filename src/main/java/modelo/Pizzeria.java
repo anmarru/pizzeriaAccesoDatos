@@ -71,10 +71,10 @@ public class Pizzeria {
 
         //registro de clientes
 
-        controladorCilente.registrarCliente(1, "54236985p", "Nico", "Calle 456", "456213698", "nico@gmail.com", "5555", true);
-        controladorCilente.registrarCliente(2, "12345678a", "Luis", "Calle 123", "123456789", "luis@gmail.com", "1234", false);
-        controladorCilente.registrarCliente(3,"23658964K","Ana","calle falsa 5","699853325","ana@gmail.com","123A",true);
-        controladorCilente.registrarCliente(1, "54236985p", "maria", "Calle 456", "456213698", "maria@gmail.com", "5555", true);
+        controladorCilente.registrarCliente(1, "54236985p", "Nico", "Calle 456", "456213698", "nico@gmail.com", "5555");
+        controladorCilente.registrarCliente(2, "12345678a", "Luis", "Calle 123", "123456789", "luis@gmail.com", "1234");
+        controladorCilente.registrarCliente(3,"23658964K","Ana","calle falsa 5","699853325","ana@gmail.com","123A");
+        controladorCilente.registrarCliente(1, "54236985p", "maria", "Calle 456", "456213698", "maria@gmail.com", "5555");
 
         System.out.println("--------------------------------------------------------------------------------------------");
         //autenticar cliente
@@ -125,20 +125,21 @@ public class Pizzeria {
 
         //FUNCION LEER ARCHIVO TXT
         try {
-                List<Cliente> clientes=controladorCilente.leerArchivoTXT();
-                clientes.forEach(System.out::println);
+                List<Cliente> administradores=controladorCilente.leerArchivoTXT();
+                administradores.forEach(System.out::println);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
 
 
-    //FUNCION EXPORTAR CLIENTESXML
-        List<Cliente> listaClientes= new ArrayList<>();
-        listaClientes.add(new Cliente(1,"5235474Q","nico","calle x 12","652358896","nico@gmail.com","14563A", true));
-        listaClientes.add(new Cliente(2, "22203344F", "María", "C/Sol 5", "678954321", "m.gonzalez@correo.com", "23456B", false));
-        listaClientes.add(new Cliente(3, "33301234A", "Carlos", "Av. Libertad 3", "690123456", "c.lopez@correo.com", "34567C", true));
 
+        List<Cliente> listaClientes= new ArrayList<>();
+        listaClientes.add(new Cliente(1,"5235474Q","nico","calle x 12","652358896","nico@gmail.com","14563A"));
+        listaClientes.add(new Cliente(2, "22203344F", "María", "C/Sol 5", "678954321", "m.gonzalez@correo.com", "23456B"));
+        listaClientes.add(new Cliente(3, "33301234A", "Carlos", "Av. Libertad 3", "690123456", "c.lopez@correo.com", "34567C"));
+
+        //FUNCION EXPORTAR CLIENTESXML
         try {
             controladorCilente.exportarArchivoClientesXML(listaClientes);
         } catch (JAXBException e) {

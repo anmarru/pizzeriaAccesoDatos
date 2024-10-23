@@ -17,14 +17,14 @@ public class Ingrediente {
     public Ingrediente() {
     }
 
-    public Ingrediente(String nombre, List<String> alergenos,int id) {
+    public Ingrediente(String nombre, List<String> alergenos, int id) {
         this.nombre = nombre;
         this.alergenos = alergenos;
         this.id = id;
 
     }
 
-    
+
     public String getNombre() {
         return nombre;
     }
@@ -32,8 +32,6 @@ public class Ingrediente {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
-    
 
 
     public List<String> getAlergenos() {
@@ -53,7 +51,6 @@ public class Ingrediente {
     }
 
 
-    
     @Override
     public String toString() {
         return "Ingrediente{" +
@@ -63,6 +60,5 @@ public class Ingrediente {
                 '}';
     }
 
-    
 
 }

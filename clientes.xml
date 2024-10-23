@@ -7,7 +7,7 @@
         <telefono>652358896</telefono>
         <email>nico@gmail.com</email>
         <password>14563A</password>
-        <esAdministrador>true</esAdministrador>
+        <esAdministrador>false</esAdministrador>
     </cliente>
     <cliente id="2">
         <dni>22203344F</dni>
@@ -25,6 +25,6 @@
         <telefono>690123456</telefono>
         <email>c.lopez@correo.com</email>
         <password>34567C</password>
-        <esAdministrador>true</esAdministrador>
+        <esAdministrador>false</esAdministrador>
     </cliente>
 </clientes>

@@ -8,34 +8,28 @@ import modelo.pedido.Pedido;
 
 import javax.xml.bind.annotation.*;
 
-@XmlRootElement(name = "cliente")
+
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Cliente implements Pagable {
     @XmlAttribute(name = "id")
     private long id;
-    @XmlElement(name = "dni")
     private String dni;
-    @XmlElement(name = "nombre")
     private String nombre;
-    @XmlElement(name = "direccion")
     private String direccion;
-    @XmlElement(name = "telefono")
     private String telefono;
-    @XmlElement(name = "email")
     private String email;
-    @XmlElement(name = "password")
     private String password;
+    //etiqueta para que no lo tenga en cuenta
     @XmlTransient
     private List<Pedido> pedidos;
-    @XmlElement(name = "esAdministrador")
-    private boolean esAdministrador=false;
+    private boolean esAdministrador;
 
     public Cliente() {
     }
 
-    public Cliente( long id,String dni, String nombre, String direccion, String telefono, String email,
-                   String password, boolean esAdministrador) {
-        this.id=id;
+    public Cliente(long id, String dni, String nombre, String direccion, String telefono, String email,
+                   String password) {
+        this.id = id;
         this.dni = dni;
         this.nombre = nombre;
         this.direccion = direccion;
@@ -43,10 +37,13 @@ public class Cliente implements Pagable {
         this.email = email;
         this.password = password;
         this.pedidos = new ArrayList<>();
-        this.esAdministrador=esAdministrador;
+        this.esAdministrador = false;
     }
 
-
+    public Cliente(long id, String dni, String nombre, String direccion, String telefono, String email, String password, boolean esAdministrador) {
+        this(id, dni, nombre, direccion, telefono, email, password);
+        this.esAdministrador = esAdministrador;
+    }
 
     @Override
     public void pagar(double cantidad) {
@@ -56,10 +53,10 @@ public class Cliente implements Pagable {
     @Override
     public String toString() {
         return "Cliente [id=" + id + ", dni=" + dni + ", nombre=" + nombre + ", direccion=" + direccion + ", telefono="
-                + telefono + ", email=" + email + ", password=" + password + ", pedidos=" + pedidos  +" ,esAdministrador "+ esAdministrador+ "]\n";
+                + telefono + ", email=" + email + ", password=" + password + ", pedidos=" + pedidos + " ,esAdministrador " + esAdministrador + "]\n";
     }
 
-    public void agregarPedidos(Pedido pedido){
+    public void agregarPedidos(Pedido pedido) {
         pedidos.add(pedido);
     }
 
@@ -137,9 +134,4 @@ public class Cliente implements Pagable {
     }
 
 
-
-
-
-
-    
 }

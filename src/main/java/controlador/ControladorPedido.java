@@ -15,20 +15,20 @@ public class ControladorPedido {
     private Pedido pedidoactual;
     private List<Pedido> pedidos;
 
-    public ControladorPedido(){
-        this.pedidoactual=null;
-        this.pedidos= new ArrayList<>();
+    public ControladorPedido() {
+        this.pedidoactual = null;
+        this.pedidos = new ArrayList<>();
     }
 
-    public static ControladorPedido getInstance(){
-        if(instancia == null){
-            instancia= new ControladorPedido();
+    public static ControladorPedido getInstance() {
+        if (instancia == null) {
+            instancia = new ControladorPedido();
         }
         return instancia;
     }
 
-  public void crearNuevoPedido(Pedido pedido) {
-        pedidoactual=pedido;
+    public void crearNuevoPedido(Pedido pedido) {
+        pedidoactual = pedido;
     }
 
     public boolean agregarLineaPedido(LineaPedido lineaPedido) {
@@ -41,28 +41,27 @@ public class ControladorPedido {
         return true;
     }
 
-    public boolean finalizarPedido(Pagable pagable){
+    public boolean finalizarPedido(Pagable pagable) {
 
-        if(pedidoactual.getLineasPedido().isEmpty()|| pedidoactual==null){
+        if (pedidoactual.getLineasPedido().isEmpty() || pedidoactual == null) {
             System.out.println("no hay lineas en el pedido ");
         }
         pagable.pagar(pedidoactual.getPrecioTotal());
         pedidoactual.setEstado(EstadoPedido.FINALIZADO);
         pedidos.add(pedidoactual);
         //pedidoactual= null;
-        return  true;
+        return true;
 
     }
 
 
-
     public Pedido cancelarPedido() {
-        if(pedidoactual == null){
+        if (pedidoactual == null) {
             System.out.println("No hay pedidos activos ");
 
         }
 
-        if (pedidoactual.getEstado() == EstadoPedido.ENTREGADO){
+        if (pedidoactual.getEstado() == EstadoPedido.ENTREGADO) {
             System.out.println("Pedido entregado , no se puede cancelar ");
 
         }
@@ -73,12 +72,12 @@ public class ControladorPedido {
         return pedidoactual;
     }
 
-    public Pedido entregarPedido(){
-       if(pedidoactual== null || pedidoactual.getEstado() != EstadoPedido.FINALIZADO){
-           System.out.println("No hay pedido finalizado para ser entregado ");
+    public Pedido entregarPedido() {
+        if (pedidoactual == null || pedidoactual.getEstado() != EstadoPedido.FINALIZADO) {
+            System.out.println("No hay pedido finalizado para ser entregado ");
 
-       }
-       pedidoactual.setEstado(EstadoPedido.ENTREGADO);
+        }
+        pedidoactual.setEstado(EstadoPedido.ENTREGADO);
         System.out.println("Pedido entregado");
 
         return pedidoactual;

@@ -17,47 +17,47 @@ public class Pedido {
     private final Cliente cliente;
 
 
-    public Pedido( long id, Cliente cliente) {
-        this.id=id;
+    public Pedido(long id, Cliente cliente) {
+        this.id = id;
         this.fecha = new Date();
-        this.precioTotal =0;
-        this.lineasPedido= new ArrayList<>();
-        this.estado= EstadoPedido.PENDIENTE;
-        this.cliente=cliente;
+        this.precioTotal = 0;
+        this.lineasPedido = new ArrayList<>();
+        this.estado = EstadoPedido.PENDIENTE;
+        this.cliente = cliente;
     }
 
-    public Pedido(Pedido pedido){
-        this(pedido.id,pedido.cliente);
+    public Pedido(Pedido pedido) {
+        this(pedido.id, pedido.cliente);
     }
-    
-    
+
+
     @Override
     public String toString() {
-        String info= "Pedido [id=" + id + ", fecha=" + fecha + ", precioTotal=" + precioTotal + ", estado=" + estado + "]\n";
-        for(LineaPedido l: lineasPedido){
-            info+=l.toString()+"\n";
+        String info = "Pedido [id=" + id + ", fecha=" + fecha + ", precioTotal=" + precioTotal + ", estado=" + estado + "]\n";
+        for (LineaPedido l : lineasPedido) {
+            info += l.toString() + "\n";
         }
         return info;
     }
 
 
-    public void agregarLineaPedido(LineaPedido nuevalineaPedido){
-        boolean lineaExistente= false;
+    public void agregarLineaPedido(LineaPedido nuevalineaPedido) {
+        boolean lineaExistente = false;
 
-        for(LineaPedido linea:lineasPedido){
+        for (LineaPedido linea : lineasPedido) {
 
-            if(linea.getId()==nuevalineaPedido.getId()){
+            if (linea.getId() == nuevalineaPedido.getId()) {
                 linea.aniadirCantidad(nuevalineaPedido.getCantidad());
-                lineaExistente=true;
+                lineaExistente = true;
                 break;
             }
         }
-        if(!lineaExistente){
+        if (!lineaExistente) {
             lineasPedido.add(new LineaPedido(nuevalineaPedido));
         }
 
-        precioTotal+=nuevalineaPedido.getCantidad()*nuevalineaPedido.getPrecio();
-    
+        precioTotal += nuevalineaPedido.getCantidad() * nuevalineaPedido.getPrecio();
+
     }
 
     public List<LineaPedido> getLineasPedido() {
@@ -73,11 +73,9 @@ public class Pedido {
     }
 
 
-
     public Date getFecha() {
         return fecha;
     }
-
 
 
     public float getPrecioTotal() {
@@ -97,7 +95,4 @@ public class Pedido {
     }
 
 
-    
-
-    
 }

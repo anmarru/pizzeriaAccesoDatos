@@ -1,17 +1,18 @@
 package modelo.pedido;
+
 import modelo.producto.Producto;
 
 public class LineaPedido {
     private int id;
     private int cantidad;
     private Producto producto;
-    
 
-    public LineaPedido(int id,int cantidad, Producto producto) {
+
+    public LineaPedido(int id, int cantidad, Producto producto) {
         this.id = id;
         this.cantidad = cantidad;
-        this.producto=producto;
-        
+        this.producto = producto;
+
     }
 
     public LineaPedido(LineaPedido nuevalineaPedido) {
@@ -21,10 +22,8 @@ public class LineaPedido {
 
     @Override
     public String toString() {
-        return "LineaPedido [id=" + id + ", cantidad=" + cantidad + ", producto=" + producto + getPrecio()+ "]";
+        return "LineaPedido [id=" + id + ", cantidad=" + cantidad + ", producto=" + producto + getPrecio() + "]";
     }
-
-
 
 
     public int getId() {
@@ -46,8 +45,8 @@ public class LineaPedido {
         this.cantidad = cantidad;
     }
 
-    public void aniadirCantidad(int cantidad){
-        this.cantidad+=cantidad;
+    public void aniadirCantidad(int cantidad) {
+        this.cantidad += cantidad;
     }
 
     public Producto getProducto() {
@@ -59,14 +58,9 @@ public class LineaPedido {
         this.producto = producto;
     }
 
-    public double getPrecio(){
+    public double getPrecio() {
         return cantidad * producto.getPrecio();
     }
-    
-    
 
-    
-    
 
-    
 }
