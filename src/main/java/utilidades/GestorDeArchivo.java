@@ -20,11 +20,14 @@ import java.util.List;
 import java.io.FileWriter;
 
 public class GestorDeArchivo {
+    private static final String ARCHIVO_ADMIN_TXT="admin.txt";
+    private static final String ARCHIVO_CLIENTES_XML="clientes.xml";
+    private static final String ARCHIVO_INGREDIENTES_CSV="Ingredientes.csv";
 
-    public  static List<Cliente> leerCliente(String nombreArchivo) throws IOException {
+    public  static List<Cliente> leerCliente() throws IOException {
 
         List<Cliente> listaCliente= new ArrayList<>();
-        try(BufferedReader reader= new BufferedReader(new FileReader(nombreArchivo))){
+        try(BufferedReader reader= new BufferedReader(new FileReader(ARCHIVO_ADMIN_TXT))){
             String lineas;
             while ((lineas= reader.readLine()) !=null){
                 String[] campos= lineas.split("[;,|]");
@@ -50,7 +53,7 @@ public class GestorDeArchivo {
         return  listaCliente;
     }
 
-    public static void exportarClienteAxml(List<Cliente> listaClientes, String nombreArchivo) throws JAXBException {
+    public static void exportarClienteAxml(List<Cliente> listaClientes) throws JAXBException {
             //contiene mi lista de clientes
             Clientes cliente=new Clientes(listaClientes);
 
@@ -58,24 +61,24 @@ public class GestorDeArchivo {
             Marshaller marshaller=context.createMarshaller();
 
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,true);
-            marshaller.marshal(cliente,new File(nombreArchivo));
+            marshaller.marshal(cliente,new File(ARCHIVO_CLIENTES_XML));
             System.out.println("exportado archivoXML...\n");
     }
 
-    public static List<Cliente> importarClientesDesdeArchivoXML(String ruraArchivo) throws JAXBException {
+    public static List<Cliente> importarClientesDesdeArchivoXML() throws JAXBException {
         JAXBContext context = JAXBContext.newInstance(Clientes.class);
 
         Unmarshaller unmarshaller= context.createUnmarshaller();
         //leo el archivo y lo convierto a obCliente
-        File archivoXml=new File(ruraArchivo);
+        File archivoXml=new File(ARCHIVO_CLIENTES_XML);
         Clientes clientes= (Clientes)unmarshaller.unmarshal(archivoXml);
-
+        System.out.println("IMPORTANDO CLIENTES...");
         //devuelvo la lista
         return  clientes.getClientes();
     }
 
     public static void exportarIngredienteCSV(List<Ingrediente> listaDeIngredientes) throws FileNotFoundException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
-        try (PrintWriter pw = new PrintWriter("Ingredientes.csv")) {
+        try (PrintWriter pw = new PrintWriter(ARCHIVO_INGREDIENTES_CSV)) {
             StatefulBeanToCsv<Ingrediente> beanToCsv = new StatefulBeanToCsvBuilder<Ingrediente>(pw).withSeparator(';').build();
             beanToCsv.write(listaDeIngredientes);
             System.out.println("exportado archivoCSV...\n");
@@ -85,12 +88,13 @@ public class GestorDeArchivo {
     public static List<Ingrediente> importarIngredientesDesdeCSV() throws IOException {
         List<Ingrediente> ingredientes;
 
-        try (FileReader fileReader = new FileReader("ingredientes.csv")) {
+        try (FileReader fileReader = new FileReader(ARCHIVO_INGREDIENTES_CSV)) {
             // Se crea un csvToBean de clase ingrediente
             CsvToBean<Ingrediente> csvToBean = new
                     CsvToBeanBuilder<Ingrediente>(fileReader)
                     .withType(Ingrediente.class)
                     .build();
+            System.out.println("IMPORTANDO INGREDIENTES...");
             // Parsea el fichero CSV en una lista de ingrdientes
             ingredientes = csvToBean.parse();
         }

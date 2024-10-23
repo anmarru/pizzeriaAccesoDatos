@@ -134,18 +134,18 @@ public class ControladorCilente {
     }
 
 
-    public List<Cliente> leerArchivoTXT(String nombreArchivo) throws IOException {
+    public List<Cliente> leerArchivoTXT() throws IOException {
 
-        return GestorDeArchivo.leerCliente(nombreArchivo);
+        return GestorDeArchivo.leerCliente();
 
     }
 
-    public void exportarArchivoClientesXML(List<Cliente>listaClientes, String nombreArchivo) throws JAXBException {
-        GestorDeArchivo.exportarClienteAxml(listaClientes,nombreArchivo);
+    public void exportarArchivoClientesXML(List<Cliente>listaClientes) throws JAXBException {
+        GestorDeArchivo.exportarClienteAxml(listaClientes);
     }
 
-    public List<Cliente> importarArchivoClientesXML(String nombreArchivo) throws JAXBException {
-        return GestorDeArchivo.importarClientesDesdeArchivoXML(nombreArchivo);
+    public List<Cliente> importarArchivoClientesXML() throws JAXBException {
+        return GestorDeArchivo.importarClientesDesdeArchivoXML();
     }
 
     public void exportarArchivoIngredientesCSV(List<Ingrediente> listaDeIngredientes) throws CsvRequiredFieldEmptyException, FileNotFoundException, CsvDataTypeMismatchException {

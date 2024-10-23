@@ -20,8 +20,9 @@ import utilidades.GestorDeArchivo;
 import javax.xml.bind.JAXBException;
 
 public class Pizzeria {
-    private static final String ARCHIVO_TXT="admin.txt";
-    private static final String ARCHIVO_XML="clientes.xml";
+
+
+
     public static void main(String[] args) {
 
 
@@ -116,6 +117,7 @@ public class Pizzeria {
         controladorCilente.recibirPedido();
         System.out.println(controladorCilente.getControladorPedido().getPedidoactual());
 
+        Cliente cliente1= new Cliente(5,"8569426","stephania","calle y","965368526","stephania@gmail.com","456987",true);
 
 
         System.out.println("-------------------------------ARCHIVOS-----------------------------------------------------------\n");
@@ -123,7 +125,7 @@ public class Pizzeria {
 
         //FUNCION LEER ARCHIVO TXT
         try {
-                List<Cliente> clientes=controladorCilente.leerArchivoTXT(ARCHIVO_TXT);
+                List<Cliente> clientes=controladorCilente.leerArchivoTXT();
                 clientes.forEach(System.out::println);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -138,7 +140,7 @@ public class Pizzeria {
         listaClientes.add(new Cliente(3, "33301234A", "Carlos", "Av. Libertad 3", "690123456", "c.lopez@correo.com", "34567C", true));
 
         try {
-            controladorCilente.exportarArchivoClientesXML(listaClientes,ARCHIVO_XML);
+            controladorCilente.exportarArchivoClientesXML(listaClientes);
         } catch (JAXBException e) {
             throw new RuntimeException(e);
         }
@@ -149,7 +151,7 @@ public class Pizzeria {
         //creo mi lista para almacenar los obj importados del xml
         List<Cliente>  listaClientesxml;
         try {
-             listaClientesxml = controladorCilente.importarArchivoClientesXML(ARCHIVO_XML);
+             listaClientesxml = controladorCilente.importarArchivoClientesXML();
         } catch (JAXBException e) {
             throw new RuntimeException(e);
         }
@@ -170,11 +172,7 @@ public class Pizzeria {
 
         try {
             controladorCilente.exportarArchivoIngredientesCSV(lista_ingredientes);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (CsvRequiredFieldEmptyException e) {
-            throw new RuntimeException(e);
-        } catch (CsvDataTypeMismatchException e) {
+        } catch (FileNotFoundException | CsvRequiredFieldEmptyException | CsvDataTypeMismatchException e) {
             throw new RuntimeException(e);
         }
 

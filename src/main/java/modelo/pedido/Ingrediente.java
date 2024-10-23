@@ -8,6 +8,7 @@ import java.util.List;
 public class Ingrediente {
     @CsvBindByName(column = "NOMBRE")
     private String nombre;
+    //para que lea la lista de la columna de alergenos separadas por comas de la clase String
     @CsvBindAndSplitByName(column = "ALERGENOS", writeDelimiter = ",", elementType = String.class)
     private List<String> alergenos;
     @CsvBindByName(column = "ID")
