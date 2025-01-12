@@ -2,50 +2,89 @@ package controlador;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+import controlador.dao.ClienteDao;
+import controlador.dao.implement.jpa.JpaClienteDao;
 import modelo.cliente.Cliente;
 import modelo.pedido.Ingrediente;
 import modelo.pedido.LineaPedido;
 import modelo.pedido.Pagable;
 import modelo.pedido.Pedido;
-import modelo.producto.Producto;
+import utilidades.DataBaseConfig;
 import utilidades.GestorDeArchivo;
 
 import javax.xml.bind.JAXBException;
 
-public class ControladorCilente {
-    private static ControladorCilente controladorCilente;
-    private ControladorPedido controladorPedido;
+public class ControladorCliente {
+    private ClienteDao clienteDao;
 
+    private static ControladorCliente controladorCliente;
+    private ControladorPedido controladorPedido;
     private Cliente clienteActual;
     private List<Cliente> listaClientes;
 
 
-    public ControladorCilente() {
+    public ControladorCliente() {
         controladorPedido = ControladorPedido.getInstance();
         this.clienteActual = null;
         this.listaClientes = new ArrayList<>();
+
+        //clienteDao= new JdbcClienteDao();//genero un cliente dao que usa la interfaz
+        clienteDao= new JpaClienteDao();
     }
 
 
-    public static ControladorCilente getInstance() {
-        if (controladorCilente != null) {
-            return controladorCilente;
+
+    public static ControladorCliente getInstance() {
+        if (controladorCliente != null) {
+            return controladorCliente;
         }
-        return new ControladorCilente();
+        return new ControladorCliente();
+    }
+    //-------------------METODOS PARA AGREGAR EN LA BASE DE DATOS-----------------------------
+    public void borrarYcrearTablas() throws SQLException {
+        DataBaseConfig.dropAndCreateTables();
+    }
+    public void crearTablas() throws SQLException {
+        DataBaseConfig.createTables();
+    }
+    public void guardarCliente(Cliente cliente) throws SQLException {
+        clienteDao.save(cliente);
     }
 
+    public void actualizarCliente(Cliente cliente) throws SQLException {
+        clienteDao.update(cliente);
+    }
+    public void borrarClienteDNI(String dni) throws SQLException {
+        clienteDao.delete(dni);
+    }
+    public void buscarClienteEmail(String email){
+        clienteDao.findByEmail(email);
+    }
+    public List<Cliente> obtenerTodosLosClientes(){
+        return clienteDao.findAll();
+    }
 
+    public Cliente obtenerClienteId(int id){
+        return clienteDao.obtenerClientePorId(id);
+    }
+
+    public void deleteId(int id) throws SQLException {
+        clienteDao.deleteId(id);
+    }
+
+    //-----------------------------------------------------------------------
     public boolean agregarLieaPedido(LineaPedido lineaPedido) {
         return controladorPedido.agregarLineaPedido(lineaPedido);
 
     }
 
-    public boolean registrarCliente(int id, String dni, String nombre, String direccion, String telefono, String email,
+    /*public boolean registrarCliente(int id, String dni, String nombre, String direccion, String telefono, String email,
                                     String password) {
 
         Cliente cliente = null;
@@ -78,7 +117,7 @@ public class ControladorCilente {
         System.out.println("Autenticacion erronea ");
         return false;
 
-    }
+    }*/
 
 
     public boolean finalizarPedido(Pagable pago) {
@@ -99,12 +138,12 @@ public class ControladorCilente {
         return true;
     }
 
-    public static ControladorCilente getControladorCilente() {
-        return controladorCilente;
+    public static ControladorCliente getControladorCilente() {
+        return controladorCliente;
     }
 
-    public static void setControladorCilente(ControladorCilente controladorCilente) {
-        ControladorCilente.controladorCilente = controladorCilente;
+    public static void setControladorCilente(ControladorCliente controladorCliente) {
+        ControladorCliente.controladorCliente = controladorCliente;
     }
 
     public ControladorPedido getControladorPedido() {

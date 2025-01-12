@@ -2,15 +2,20 @@ package modelo.pedido;
 
 import com.opencsv.bean.CsvBindAndSplitByName;
 import com.opencsv.bean.CsvBindByName;
+import jakarta.persistence.*;
 
 import java.util.List;
-
+@Entity
 public class Ingrediente {
     @CsvBindByName(column = "NOMBRE")
     private String nombre;
     //para que lea la lista de la columna de alergenos separadas por comas de la clase String
     @CsvBindAndSplitByName(column = "ALERGENOS", writeDelimiter = ",", elementType = String.class)
+    @ElementCollection
     private List<String> alergenos;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @CsvBindByName(column = "ID")
     private int id;
 
@@ -22,6 +27,9 @@ public class Ingrediente {
         this.alergenos = alergenos;
         this.id = id;
 
+    }
+
+    public Ingrediente(int id, String nombre) {
     }
 
 
@@ -42,7 +50,7 @@ public class Ingrediente {
         this.alergenos = alergenos;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 

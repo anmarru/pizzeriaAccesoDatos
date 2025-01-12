@@ -47,7 +47,7 @@ public class GestorDeArchivo {
                 String password = campos[6];
                 boolean esAdmin = Boolean.parseBoolean(campos[7]);
 
-                Cliente cliente = new Cliente(id, dni, nombre, direccion, telefono, email, password, esAdmin);
+                Cliente cliente = new Cliente(dni, nombre, direccion, telefono, email, password, esAdmin);
                 listaCliente.add(cliente);
             }
         }

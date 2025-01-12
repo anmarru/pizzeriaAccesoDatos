@@ -2,23 +2,37 @@ package modelo.cliente;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import jakarta.persistence.*;
 import modelo.pedido.Pagable;
 import modelo.pedido.Pedido;
 
 import javax.xml.bind.annotation.*;
 
-
+@Entity
+@Table(name = "clientes")//nombre de la tabla de la bd
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Cliente implements Pagable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//genero la clave primaria automatica
     @XmlAttribute(name = "id")
-    private long id;
+    private int id;
+    @Column(nullable = false, unique = true) //no puede ser nulo y debe ser unico
     private String dni;
+    @Column(nullable = false)
     private String nombre;
+    @Column(nullable = false)
     private String direccion;
+    @Column(nullable = false)
     private String telefono;
+    @Column(nullable = false, unique = true) //no puede ser nulo y debe ser unico
     private String email;
+    @Column(nullable = false)
     private String password;
+    //relacion con Pedido
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     //etiqueta para que no lo tenga en cuenta
     @XmlTransient
     private List<Pedido> pedidos;
@@ -27,7 +41,7 @@ public class Cliente implements Pagable {
     public Cliente() {
     }
 
-    public Cliente(long id, String dni, String nombre, String direccion, String telefono, String email,
+    public Cliente(int id, String dni, String nombre, String direccion, String telefono, String email,
                    String password) {
         this.id = id;
         this.dni = dni;
@@ -40,8 +54,14 @@ public class Cliente implements Pagable {
         this.esAdministrador = false;
     }
 
-    public Cliente(long id, String dni, String nombre, String direccion, String telefono, String email, String password, boolean esAdministrador) {
-        this(id, dni, nombre, direccion, telefono, email, password);
+    public Cliente( String dni, String nombre, String direccion, String telefono, String email, String password, boolean esAdministrador) {
+        this.dni=dni;
+        this.nombre= nombre;
+        this.direccion= direccion;
+        this.telefono=telefono;
+        this.email= email;
+        this.password=password;
+
         this.esAdministrador = esAdministrador;
     }
 
@@ -60,7 +80,7 @@ public class Cliente implements Pagable {
         pedidos.add(pedido);
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -133,5 +153,16 @@ public class Cliente implements Pagable {
         this.pedidos = pedidos;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cliente cliente = (Cliente) o;
+        return id == cliente.id && esAdministrador == cliente.esAdministrador && Objects.equals(dni, cliente.dni) && Objects.equals(nombre, cliente.nombre) && Objects.equals(direccion, cliente.direccion) && Objects.equals(telefono, cliente.telefono) && Objects.equals(email, cliente.email) && Objects.equals(password, cliente.password);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, dni, nombre, direccion, telefono, email, password, esAdministrador);
+    }
 }

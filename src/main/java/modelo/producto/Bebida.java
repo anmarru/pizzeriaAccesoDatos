@@ -1,31 +1,32 @@
 package modelo.producto;
+import jakarta.persistence.*;
 
+@Entity
+@DiscriminatorValue("Bebida") // Valor para la columna tipo_producto
 public class Bebida extends Producto{
-    
-    
+    @Enumerated(EnumType.STRING)
     public final Size size;
-    
-    public Bebida(int id, String nombre, double precio, Size size) {
-        super(id, nombre, precio);
+
+    public Bebida(String nombre, double precio, Size size) {
+        super(0, nombre, precio);
         this.size = size;
-        
     }
 
-    public Size getsize() {
+    public Size getSize() {
         return size;
     }
 
 
     @Override
     public String toString() {
-        return "Bebida [size=" + size + "]";
+        return super.toString()+"Bebida"+super.toString()+" [size=" + size + "]";
     }
 
-    
 
-    
-    
 
-    
-    
+
+
+
+
+
 }
