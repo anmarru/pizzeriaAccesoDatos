@@ -73,7 +73,7 @@ public class Cliente implements Pagable {
     @Override
     public String toString() {
         return "Cliente [id=" + id + ", dni=" + dni + ", nombre=" + nombre + ", direccion=" + direccion + ", telefono="
-                + telefono + ", email=" + email + ", password=" + password + ", pedidos=" + pedidos + " ,esAdministrador " + esAdministrador + "]\n";
+                + telefono + ", email=" + email + ", password=" + password + " ,esAdministrador " + esAdministrador + "]\n";
     }
 
     public void agregarPedidos(Pedido pedido) {
