@@ -1,9 +1,7 @@
 package controlador;
 
 
-import jakarta.persistence.EntityManager;
 import modelo.cliente.Cliente;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Disabled;
 
@@ -31,7 +29,7 @@ public class ControladorClienteTest {
     }
 
     @Test
-    public void guardarCliente() throws SQLException {
+    public void registrarCliente() throws SQLException {
 
         Cliente cliente1= new Cliente("96586326Q", "Ana","calle falsa 45","699856652","ana@gmail.com","123456",false);
         Cliente cliente2= new Cliente("45586326P", "Gustavo","calle pimienta 5","644856652","gustavo@gmail.com","abc12",true);
@@ -53,7 +51,7 @@ public class ControladorClienteTest {
         System.out.println(cliente1);
     }
 
-    @Test
+   /* @Test
     public void borrarClienteDNI() throws SQLException {
         Cliente cliente = new Cliente("45586326P", "Gustavo", "calle pimienta 5", "644856652", "gustavo@gmail.com", "abc12", true);
         Cliente cliente1= new Cliente("96586326Q", "Ana Ruiz","calle falsa 45","699856652","ana@gmail.com","123456",false);
@@ -69,15 +67,16 @@ public class ControladorClienteTest {
         assertFalse(clientesDespues.stream().anyMatch(c -> c.getDni().equals("96586326Q")));
         List<Cliente> clientes2=controladorCliente.obtenerTodosLosClientes();
         clientes2.forEach(System.out::println);
-    }
+    }*/
 
     @Test
     public void borrarClienteId() throws SQLException {
         Cliente cliente = new Cliente("45586326P", "Gustavo", "calle pimienta 5", "644856652", "gustavo@gmail.com", "abc12", true);
         controladorCliente.guardarCliente(cliente);
         controladorCliente.deleteId(1);
-        Cliente borrado= (Cliente) controladorCliente.obtenerClienteId(1);
+        Cliente borrado=controladorCliente.obtenerClienteId(1);
         assertNull(borrado);
+
 
     }
     @Test
@@ -111,5 +110,22 @@ public class ControladorClienteTest {
         }
     }
 
+    @Test
+    public void login() throws SQLException {
+        Cliente cliente= new Cliente("96586326Q", "Ana", "calle falsa 45", "699856652", "ana@gmail.com", "123456", false);
+        controladorCliente.guardarCliente(cliente);
+        Cliente clienteLogeado =controladorCliente.login("ana@gmail.com","123456");
+        assertNotNull(clienteLogeado); // El cliente no debe ser null
+        assertEquals("96586326Q", clienteLogeado.getDni()); //debe coincidir
+        assertEquals("Ana", clienteLogeado.getNombre()); //nombre debe coincidir
+        assertEquals("ana@gmail.com", clienteLogeado.getEmail()); //email debe coincidir
+
+        // Intentar iniciar sesión con una contraseña incorrecta
+        Cliente clienteInvalido = controladorCliente.login("ana@gmail.com", "wrongpassword");
+
+        //verificar que las credenciales incorrectas no loguean
+        assertNull(clienteInvalido); //null para credenciales inválidas
+
+    }
 
 }

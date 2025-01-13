@@ -78,6 +78,12 @@ public class ControladorCliente {
         clienteDao.deleteId(id);
     }
 
+    public Cliente login(String email, String password){
+        return clienteDao.login(email,password);
+    }
+    //hacer funcion que sea loguear que obtenga el email y la contraseña para obtener el cliente
+    //busco el email del clientes en la lista de clientes y compruebo su contraseña para poder obtenerlo
+
     //-----------------------------------------------------------------------
     public boolean agregarLieaPedido(LineaPedido lineaPedido) {
         return controladorPedido.agregarLineaPedido(lineaPedido);

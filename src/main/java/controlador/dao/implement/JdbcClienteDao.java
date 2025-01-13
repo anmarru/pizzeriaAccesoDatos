@@ -158,4 +158,9 @@ public class JdbcClienteDao implements ClienteDao {
     public void deleteId(int id) throws SQLException {
 
     }
+
+    @Override
+    public Cliente login(String email, String password) {
+        return null;
+    }
 }

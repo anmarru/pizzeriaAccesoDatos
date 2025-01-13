@@ -21,4 +21,6 @@ public interface ClienteDao {
 
      Cliente obtenerClientePorId(int clienteId);
 
+     Cliente login(String email, String password);
+
 }

@@ -1,10 +1,7 @@
 package controlador.dao.implement.jpa;
 
 import controlador.dao.ClienteDao;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 import modelo.cliente.Cliente;
 import org.hibernate.Hibernate;
 
@@ -42,8 +39,8 @@ public class JpaClienteDao implements ClienteDao {
         try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
             entityManager.getTransaction().begin();
             //Cliente cliente = entityManager.find(Cliente.class, dni);//hacer quiery
-            TypedQuery<Cliente> query = entityManager.createQuery("SELECT c FROM Cliente c WHERE c.dni= :dni", Cliente.class
-            ).setParameter("dni", dni);
+            TypedQuery<Cliente> query = entityManager.createQuery("SELECT c FROM Cliente c WHERE c.dni= :dni", Cliente.class)
+                    .setParameter("dni", dni);
             Cliente cliente = query.getResultStream().findFirst().orElse(null);
             if (cliente != null) {
                 entityManager.remove(cliente);//revoque elimina las entidades de la base de datos
@@ -88,7 +85,12 @@ public class JpaClienteDao implements ClienteDao {
     public List<Cliente> findAll() {
         try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
             TypedQuery<Cliente> query = entityManager.createQuery("SELECT c FROM Cliente c", Cliente.class);
-            return query.getResultList();
+            List<Cliente> clientes= query.getResultList();
+            //inicializar las colecciones perezosas
+            for (Cliente cliente : clientes) {
+                cliente.getPedidos().size(); // Acceder a la colección para inicializarla
+            }
+            return clientes;
         }
     }
 
@@ -109,13 +111,39 @@ public class JpaClienteDao implements ClienteDao {
     public void deleteId(int id) throws SQLException {
         EntityManager entityManager= entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
-        if(obtenerClientePorId(id)== null){
+        Cliente cliente= entityManager.find(Cliente.class,id);
+        if(cliente== null){
             throw new IllegalArgumentException("el cliente no ha sido encontrado");
         }else{
-            Cliente cliente= obtenerClientePorId(id);
-            cliente= entityManager.merge(cliente);
+            //se elimina la entidad que gestiona el entity
+            entityManager.remove(cliente);
             entityManager.getTransaction().commit();
             entityManager.close();
         }
     }
+
+    @Override
+    public Cliente login(String email, String password) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            // Crear la consulta y establecer parámetros
+            TypedQuery<Cliente> query = entityManager.createQuery(
+                    "SELECT c FROM Cliente c WHERE c.email = :email AND c.password = :password",
+                    Cliente.class
+            );
+            query.setParameter("email", email);
+            query.setParameter("password", password);
+
+            // Obtener el resultado antes de cerrar el EntityManager
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            // Manejar el caso donde no se encuentra un cliente con las credenciales proporcionadas
+            return null;
+        } finally {
+            // Cerrar el EntityManager
+            entityManager.close();
+        }
+    }
+
+
 }
