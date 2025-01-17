@@ -4,19 +4,23 @@ import controlador.dao.ProductoDao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import jakarta.persistence.TypedQuery;
 import jdk.jfr.Percentage;
 import modelo.pedido.Ingrediente;
+import modelo.pedido.Pedido;
 import modelo.producto.Pasta;
 import modelo.producto.Pizza;
 import modelo.producto.Producto;
 import org.hibernate.Hibernate;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JpaProductoDao implements ProductoDao {
     private final EntityManagerFactory entityManagerFactory;
     private static JpaProductoDao instance;
+    private static List<Producto>listaProductos;
 
     public JpaProductoDao() {
         entityManagerFactory= Persistence.createEntityManagerFactory("default");
@@ -30,8 +34,37 @@ public class JpaProductoDao implements ProductoDao {
 
     @Override
     public void save(Producto producto) throws SQLException {
-        EntityManager entityManager= entityManagerFactory.createEntityManager();
-        try{
+        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+            entityManager.getTransaction().begin();
+            List<Ingrediente> listaIngredientes = new ArrayList<>();
+
+            if (producto instanceof Pizza pizza)
+                listaIngredientes = pizza.getIngredientes();
+            else if (producto instanceof Pasta pasta)
+                listaIngredientes = pasta.getIngredientes();
+
+            List<Ingrediente> listaManaged = new ArrayList<>();
+
+            for (Ingrediente ingrediente : listaIngredientes) {
+                Ingrediente ingredienteManaged = entityManager.find(Ingrediente.class, ingrediente.getId());
+                if (ingredienteManaged == null) {
+                    entityManager.persist(ingrediente);
+                    ingredienteManaged = ingrediente;
+                }
+                ingredienteManaged.setAlergenos(ingrediente.getAlergenos());
+                listaManaged.add(ingredienteManaged);
+            }
+
+            if (producto instanceof Pizza pizza) {
+                pizza.setIngredientes(listaManaged);
+
+            } else if (producto instanceof Pasta pasta) {
+                pasta.setIngredientes(listaManaged);
+            }
+            entityManager.persist(producto);
+            entityManager.getTransaction().commit();
+        }
+        /*try{
             entityManager.getTransaction().begin();
             if(producto instanceof Pizza pizza){
                 for(Ingrediente ingrediente : pizza.getIngredientes()){
@@ -57,7 +90,7 @@ public class JpaProductoDao implements ProductoDao {
             entityManager.getTransaction().rollback();
         }finally {
             entityManager.close();
-        }
+        }*/
     }
 
     @Override
@@ -107,7 +140,12 @@ public class JpaProductoDao implements ProductoDao {
 
     @Override
     public List<Producto> findAll() {
-        return List.of();
+        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+            TypedQuery<Producto> query = entityManager.createQuery("SELECT p FROM Producto p", Producto.class);
+            //inicializar las colecciones perezosas
+
+            return query.getResultList();
+        }
     }
 
     @Override

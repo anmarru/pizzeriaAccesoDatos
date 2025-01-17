@@ -16,16 +16,16 @@ public class Pizzeria {
         ControladorCliente controladorCliente = new ControladorCliente();
 
         //ingredientes
-        Ingrediente ingredientePeperoni= new Ingrediente("peperoni",List.of("sulfito","lacteo"),1);
-        Ingrediente ingredienteQueso= new Ingrediente("queso", List.of("lacteo"),2);
-        Ingrediente ingredientePinia= new Ingrediente("piña",List.of(),3);
-        Ingrediente ingredientePollo= new Ingrediente("pollo", List.of("aves"),4);
-        Ingrediente ingredienteChampinion= new Ingrediente("champinion",List.of(),5);
-        Ingrediente ingredienteAlbahaca= new Ingrediente("albahaca",List.of(),6);
-        Ingrediente ingredientePata= new Ingrediente("pasta",List.of("gluten"),7);
-        Ingrediente ingredienteBacon= new Ingrediente("bacon",List.of(),8);
-        Ingrediente ingredienteArinaTrigo= new Ingrediente("arina de trigo",List.of("gluten"),9);
-        Ingrediente ingredienteCarne = new Ingrediente( "Carne", List.of("Lactosa"),10);
+        Ingrediente ingredientePeperoni= new Ingrediente("peperoni",List.of("sulfito","lacteo"));
+        Ingrediente ingredienteQueso= new Ingrediente("queso", List.of("lacteo"));
+        Ingrediente ingredientePinia= new Ingrediente("piña",List.of());
+        Ingrediente ingredientePollo= new Ingrediente("pollo", List.of("aves"));
+        Ingrediente ingredienteChampinion= new Ingrediente("champinion",List.of());
+        Ingrediente ingredienteAlbahaca= new Ingrediente("albahaca",List.of());
+        Ingrediente ingredientePata= new Ingrediente("pasta",List.of("gluten"));
+        Ingrediente ingredienteBacon= new Ingrediente("bacon",List.of());
+        Ingrediente ingredienteArinaTrigo= new Ingrediente("arina de trigo",List.of("gluten"));
+        Ingrediente ingredienteCarne = new Ingrediente( "Carne", List.of("Lactosa"));
 
         //lista ingredientes pasta
         List<Ingrediente> ingredientesPasta1= List.of(ingredientePata,ingredienteChampinion,ingredienteQueso);

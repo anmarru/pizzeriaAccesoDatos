@@ -14,7 +14,7 @@ public class LineaPedido {
     private int id;
     @Column(nullable = false)
     private int cantidad;
-    @ManyToOne(fetch = FetchType.LAZY) // Relación muchos-a-uno con Producto
+    @ManyToOne(fetch = FetchType.LAZY) //muchos-a-uno con Producto
     @JoinColumn(name = "producto_id", nullable = false)
     private Producto producto;
     @Column(nullable = false)

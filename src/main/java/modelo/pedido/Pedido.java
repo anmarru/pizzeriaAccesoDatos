@@ -28,7 +28,7 @@ public class Pedido {
     @ManyToOne(fetch = FetchType.LAZY) //relacion muchos-a-uno con Cliente
     @JoinColumn(name = "cliente_id", nullable = false)
     private  Cliente cliente;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "pedido_id") // Clave foránea en la tabla LineaPedido
     private List<LineaPedido> lineasPedido;
 

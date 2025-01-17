@@ -5,13 +5,15 @@ import jakarta.persistence.*;
 @DiscriminatorValue("Bebida") // Valor para la columna tipo_producto
 public class Bebida extends Producto{
     @Enumerated(EnumType.STRING)
-    public final Size size;
+    public  Size size;
 
     public Bebida(String nombre, double precio, Size size) {
-        super(0, nombre, precio);
+        super(nombre, precio);
         this.size = size;
     }
 
+    public Bebida(){
+    }
     public Size getSize() {
         return size;
     }

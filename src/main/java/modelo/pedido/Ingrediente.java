@@ -6,12 +6,16 @@ import jakarta.persistence.*;
 
 import java.util.List;
 @Entity
+@Table(name= "ingrediente")
 public class Ingrediente {
     @CsvBindByName(column = "NOMBRE")
+    @Column(unique = true,nullable = false)//solo hay un nombre de ingrediente
     private String nombre;
     //para que lea la lista de la columna de alergenos separadas por comas de la clase String
     @CsvBindAndSplitByName(column = "ALERGENOS", writeDelimiter = ",", elementType = String.class)
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "ingrediente_alergenos", joinColumns = @JoinColumn(name = "ingrediente_id"))
+    @Column(name = "alergeno")
     private List<String> alergenos;
 
     @Id
@@ -22,11 +26,9 @@ public class Ingrediente {
     public Ingrediente() {
     }
 
-    public Ingrediente(String nombre, List<String> alergenos, int id) {
+    public Ingrediente(String nombre, List<String> alergenos) {
         this.nombre = nombre;
         this.alergenos = alergenos;
-        this.id = id;
-
     }
 
     public Ingrediente(int id, String nombre) {

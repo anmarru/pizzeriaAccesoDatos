@@ -11,20 +11,33 @@ public class Pizza  extends Producto{
     private Size size;
    // @OneToMany(mappedBy = "ingrediente",fetch = FetchType.LAZY, cascade = CascadeType.ALL) // Relación con Ingrediente, cada Pizza puede tener múltiples ingredientes
    // @JoinColumn(name = "pizza_id") // Relacionar la tabla Ingrediente con la tabla Pizza
-   @ElementCollection
-   @CollectionTable(name = "producto_ingrediente", joinColumns = @JoinColumn(name = "producto_id"))
-   @Column(name = "ingrediente")
-   @AttributeOverride(name = "nombre", column = @Column(name = "nombre"))
+
+    //@ElementCollection
+   //@CollectionTable(name = "producto_ingrediente", joinColumns = @JoinColumn(name = "producto_id"))
+   //@Column(name = "ingrediente") @AttributeOverride(name = "nombre", column = @Column(name = "nombre"))
+
+   // @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+   // @JoinTable(
+    //        name = "producto_ingrediente",
+      //      joinColumns = @JoinColumn(name = "producto_id"),
+      //      inverseJoinColumns = @JoinColumn(name = "ingrediente_id")
+   // )
+   @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+   @JoinTable(name = "producto_ingrediente",
+           joinColumns = @JoinColumn(name = "producto_id"),
+           inverseJoinColumns = @JoinColumn(name = "ingrediente_id"))
     private List<Ingrediente> ingredientes;
 
     public Pizza(String nombre, double precio, Size size,  List<Ingrediente> ingredientes) {
-        super(0, nombre, precio);
+        super( nombre, precio);
         this.size = size;
         this.ingredientes=ingredientes;
     }
 
-    public Pizza(String nombre, double precio, Size size) {
-        super(0, nombre, precio);
+    public Pizza() {
+    }
+
+    public Pizza(Size size) {
         this.size = size;
     }
 

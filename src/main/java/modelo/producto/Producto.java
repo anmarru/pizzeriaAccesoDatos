@@ -26,6 +26,10 @@ public abstract class Producto {
         this.precio = precio;
     }
 
+    public Producto() {
+
+    }
+
     public Producto(String nombre, double precio) {
         this.nombre = nombre;
         this.precio = precio;
