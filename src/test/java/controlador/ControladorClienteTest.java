@@ -16,12 +16,12 @@ public class ControladorClienteTest {
 
 
 
-    @Test
+    /*@Test
     @Disabled
     public void borrarYcrearTablas() throws SQLException {
         crearTablas();
         controladorCliente.borrarYcrearTablas();
-    }
+    }*/
 
     @Test
     @Disabled

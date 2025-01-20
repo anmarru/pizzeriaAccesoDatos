@@ -27,11 +27,11 @@ public class JpaClienteDao implements ClienteDao {
     @Override
     public void save(Cliente cliente) throws SQLException {
 
-        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
             entityManager.persist(cliente);
             entityManager.getTransaction().commit();
-        }
+
     }
 
     @Override

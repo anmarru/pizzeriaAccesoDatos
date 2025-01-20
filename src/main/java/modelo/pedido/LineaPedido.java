@@ -39,6 +39,11 @@ public class LineaPedido {
         this(nuevalineaPedido.id, nuevalineaPedido.cantidad, nuevalineaPedido.producto);
     }
 
+    public LineaPedido(int cantidad, Producto producto) {
+        this.cantidad = cantidad;
+        this.producto = producto;
+    }
+
     public LineaPedido() {
     }
 
@@ -105,4 +110,5 @@ public class LineaPedido {
     public int hashCode() {
         return Objects.hash(id, cantidad, producto);
     }
+
 }

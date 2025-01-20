@@ -92,6 +92,9 @@ public class ControladorPedido {
 
     }
 
+    public List<LineaPedido> obtenerLineasPorPedido(int id){
+       return pedidoDao.obtenerLineasPorPedido(id);
+    }
 
     public Pedido cancelarPedido() {
         if (pedidoactual == null) {
@@ -120,6 +123,7 @@ public class ControladorPedido {
 
         return pedidoactual;
     }
+
 
 
     public static ControladorPedido getInstancia() {

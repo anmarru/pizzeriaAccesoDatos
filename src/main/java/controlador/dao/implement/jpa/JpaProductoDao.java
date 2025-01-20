@@ -64,33 +64,7 @@ public class JpaProductoDao implements ProductoDao {
             entityManager.persist(producto);
             entityManager.getTransaction().commit();
         }
-        /*try{
-            entityManager.getTransaction().begin();
-            if(producto instanceof Pizza pizza){
-                for(Ingrediente ingrediente : pizza.getIngredientes()){
-                    if(ingrediente.getId() !=0){
-                        entityManager.merge(ingrediente);
-                    }else {
-                        entityManager.persist(ingrediente);
-                    }
-                }
 
-            } else if (producto instanceof Pasta pasta) {
-                for(Ingrediente ingrediente: pasta.getIngredientes()){
-                   if(ingrediente.getId() !=0){
-                       entityManager.merge(ingrediente);
-                   }else {
-                       entityManager.persist(ingrediente);
-                   }
-                }
-            }
-            entityManager.persist(producto);
-            entityManager.getTransaction().commit();
-        }catch (Exception e){
-            entityManager.getTransaction().rollback();
-        }finally {
-            entityManager.close();
-        }*/
     }
 
     @Override
@@ -150,11 +124,22 @@ public class JpaProductoDao implements ProductoDao {
 
     @Override
     public List<Ingrediente> obtenerIngredientesPorProducto(int idProducto) {
-        return List.of();
+        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+            Producto p = entityManager.find(Producto.class, idProducto);
+            return switch (p) {
+                case Pizza pizza -> pizza.getIngredientes();
+                case Pasta pasta -> pasta.getIngredientes();
+                default -> List.of();
+            };
+        }
     }
 
     @Override
     public List<String> obtenerAlergenosPorIngrediente(int id_ingrediente) {
-        return List.of();
+        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+            return entityManager.createQuery("SELECT i.alergenos FROM Ingrediente i WHERE i.id = :id", String.class)
+                    .setParameter("id", id_ingrediente)
+                    .getResultList();
+        }
     }
 }

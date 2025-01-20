@@ -29,7 +29,7 @@ public class Pedido {
     @JoinColumn(name = "cliente_id", nullable = false)
     private  Cliente cliente;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "pedido_id") // Clave foránea en la tabla LineaPedido
+    @JoinColumn(name = "pedido_id", nullable = true) // Clave foránea en la tabla LineaPedido
     private List<LineaPedido> lineasPedido;
 
 
@@ -42,8 +42,23 @@ public class Pedido {
         this.cliente = cliente;
     }
 
+    public Pedido(Date fecha, float precioTotal, EstadoPedido estado, Cliente cliente, List<LineaPedido> lineasPedido) {
+        this.fecha = fecha;
+        this.precioTotal = precioTotal;
+        this.estado = estado;
+        this.cliente = cliente;
+        this.lineasPedido = lineasPedido;
+    }
+
     public Pedido() {
 
+    }
+
+    public Pedido(Date fecha, EstadoPedido estado, Cliente cliente) {
+        this.fecha= fecha;
+        this.estado= estado;
+        this.cliente=cliente;
+        this.lineasPedido=new ArrayList<>();
     }
 
 /*public Pedido(Pedido pedido) {
@@ -129,6 +144,7 @@ public class Pedido {
         this.fecha = new java.util.Date(fecha.getTime());
     }*/
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -140,5 +156,9 @@ public class Pedido {
     @Override
     public int hashCode() {
         return Objects.hash(id, fecha, precioTotal, estado, cliente, lineasPedido);
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 }
